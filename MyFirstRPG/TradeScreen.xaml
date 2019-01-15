@@ -35,7 +35,7 @@
                HorizontalAlignment="Center"
                Content="Trader's Inventory"/>
         <DataGrid Grid.Row="2" Grid.Column="0"
-                  ItemsSource="{Binding CurrentPlayer.Inventory}"
+                  ItemsSource="{Binding CurrentPlayer.GroupedInventory}"
                   AutoGenerateColumns="False"
                   HeadersVisibility="Column"
                   CanUserAddRows="False"
@@ -46,11 +46,15 @@
                 <DataGridTextColumn Header="Description"
                                     IsReadOnly="True"
                                     Width="*"
-                                    Binding="{Binding Path=Name}"/>
+                                    Binding="{Binding Path=Item.Name}"/>
                 <DataGridTextColumn Header="Price"
                                     IsReadOnly="True"
                                     Width="Auto"
-                                    Binding="{Binding Path=Price}"/>
+                                    Binding="{Binding Path=Item.Price}"/>
+                <DataGridTextColumn Header="Quantity"
+                                    IsReadOnly="True"
+                                    Width="Auto"
+                                    Binding="{Binding Path=Quantity}"/>
                 <DataGridTemplateColumn MinWidth="75">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -66,7 +70,7 @@
 
         <DataGrid Grid.Row="2" Grid.Column="1"
                   Margin="10" 
-                  ItemsSource="{Binding CurrentTrader.Inventory}"
+                  ItemsSource="{Binding CurrentTrader.GroupedInventory}"
                   AutoGenerateColumns="False"
                   HeadersVisibility="Column"
                   CanUserAddRows="False"
@@ -77,11 +81,15 @@
                 <DataGridTextColumn Header="Description"
                                     IsReadOnly="True"
                                     Width="*"
-                                    Binding="{Binding Path=Name}"/>
+                                    Binding="{Binding Path=Item.Name}"/>
                 <DataGridTextColumn Header="Price"
                                     IsReadOnly="True"
                                     Width="Auto"
-                                    Binding="{Binding Path=Price}"/>
+                                    Binding="{Binding Path=Item.Price}"/>
+                <DataGridTextColumn Header="Quantity"
+                                    IsReadOnly="True"
+                                    Width="Auto"
+                                    Binding="{Binding Path=Quantity}"/>
                 <DataGridTemplateColumn MinWidth="75">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

@@ -192,7 +192,7 @@ namespace GameEngine.ViewModels
                 RaiseMessage($"You receive {CurrentMonster.Gold} gold.");
                 foreach (GameItem gameItem in CurrentMonster.Inventory)
                 {
-                    CurrentPlayer.Inventory.Add(gameItem);
+                    CurrentPlayer.AddItemToInventory(gameItem);
                     RaiseMessage($"You obtained one {gameItem.Name}.");
                 }
                 //get another monster to fight

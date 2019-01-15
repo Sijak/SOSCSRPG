@@ -29,27 +29,27 @@ namespace MyFirstRPG
         }
         private void OnClick_Sell(object sender, RoutedEventArgs e)
         {
-            GameItem item = ((FrameworkElement)sender).DataContext as GameItem;
+            GroupedInventoryItem groupedInventoryiItem = ((FrameworkElement)sender).DataContext as GroupedInventoryItem;
 
-            if (item !=null)
+            if (groupedInventoryiItem !=null)
             {
-                Session.CurrentPlayer.Gold += item.Price;
-                Session.CurrentPlayer.RemoveItemFromInventory(item);
-                Session.CurrentTrader.AddItemToInventory(item);
+                Session.CurrentPlayer.Gold += groupedInventoryiItem.Item.Price;
+                Session.CurrentPlayer.RemoveItemFromInventory(groupedInventoryiItem.Item);
+                Session.CurrentTrader.AddItemToInventory(groupedInventoryiItem.Item);
             }
         }
 
         private void OnClick_Buy(object sender, RoutedEventArgs e)
         {
-            GameItem item = ((FrameworkElement)sender).DataContext as GameItem;
+            GroupedInventoryItem groupedInventoryItem = ((FrameworkElement)sender).DataContext as GroupedInventoryItem;
 
-            if(item !=null)
+            if(groupedInventoryItem !=null)
             {
-                if(Session.CurrentPlayer.Gold >= item.Price)
+                if(Session.CurrentPlayer.Gold >= groupedInventoryItem.Item.Price)
                 {
-                    Session.CurrentPlayer.Gold -= item.Price;
-                    Session.CurrentPlayer.AddItemToInventory(item);
-                    Session.CurrentTrader.RemoveItemFromInventory(item);
+                    Session.CurrentPlayer.Gold -= groupedInventoryItem.Item.Price;
+                    Session.CurrentPlayer.AddItemToInventory(groupedInventoryItem.Item);
+                    Session.CurrentTrader.RemoveItemFromInventory(groupedInventoryItem.Item);
                 }
                 else
                 {
