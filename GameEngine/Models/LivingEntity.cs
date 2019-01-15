@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace GameEngine.Models
 {
     public abstract class LivingEntity : BaseNotificationClass
-        //as an abstract class, LivingEntity cannot be instantiated. Child can be.
+    //as an abstract class, LivingEntity cannot be instantiated. Child can be.
     {
         private string _name;
         private int _currentHitPoint;
@@ -17,8 +17,8 @@ namespace GameEngine.Models
 
         public string Name
         {
-            get {return _name;}
-            set
+            get { return _name; }
+            private set
             {
                 _name = value;
                 OnPropertyChanged(nameof(Name));
@@ -28,7 +28,7 @@ namespace GameEngine.Models
         public int CurrentHitPoint
         {
             get { return _currentHitPoint; }
-            set
+            private set
             {
                 _currentHitPoint = value;
                 OnPropertyChanged(nameof(CurrentHitPoint));
@@ -38,7 +38,7 @@ namespace GameEngine.Models
         public int MaximumHitPoint
         {
             get { return _maximumHitPoint; }
-            set
+            private set
             {
                 _maximumHitPoint = value;
                 OnPropertyChanged(nameof(MaximumHitPoint));
@@ -48,7 +48,7 @@ namespace GameEngine.Models
         public int Gold
         {
             get { return _gold; }
-            set
+            private set
             {
                 _gold = value;
                 OnPropertyChanged(nameof(Gold));
@@ -58,11 +58,57 @@ namespace GameEngine.Models
         public ObservableCollection<GameItem> Inventory { get; set; }
         public ObservableCollection<GroupedInventoryItem> GroupedInventory { get; set; }
         public List<GameItem> Weapons => Inventory.Where(i => i is Weapon).ToList();
+        public bool IsDead => CurrentHitPoint <= 0;
+        public event EventHandler OnKilled;
 
-        protected LivingEntity()
+        protected LivingEntity(string name, int currentHitPoint, int maximumHitPoint, int gold)
         {
+            Name = name;
+            CurrentHitPoint = currentHitPoint;
+            MaximumHitPoint = maximumHitPoint;
+            Gold = gold;
+
             Inventory = new ObservableCollection<GameItem>();
             GroupedInventory = new ObservableCollection<GroupedInventoryItem>();
+        }
+
+        public void TakeDamage(int hitPointsOfDamage)
+        {
+            CurrentHitPoint -= hitPointsOfDamage;
+
+            if (IsDead)
+            {
+                CurrentHitPoint = 0;
+                RaiseOnKilledEvent();
+            }
+        }
+
+        public void Heal(int hitPointsToHeal)
+        {
+            CurrentHitPoint += hitPointsToHeal;
+            if(CurrentHitPoint > MaximumHitPoint)
+            {
+                CurrentHitPoint = MaximumHitPoint;
+            }
+        }
+
+        public void CompleteHeal()
+        {
+            CurrentHitPoint = MaximumHitPoint;
+        }
+
+        public void ReceiveGold(int amountOfGold)
+        {
+            Gold += amountOfGold;
+        }
+
+        public void SpendGold(int amountOfGold)
+        {
+            if(Gold<amountOfGold)
+            {
+                throw new ArgumentOutOfRangeException($"{Name} only has {Gold} Gold, and cannot spend {amountOfGold} Gold.");
+            }
+            Gold -= amountOfGold;
         }
 
         public void AddItemToInventory(GameItem item)
@@ -104,6 +150,10 @@ namespace GameEngine.Models
                 }
             }
             OnPropertyChanged(nameof(Weapons));
+        }
+        private void RaiseOnKilledEvent()
+        {
+            OnKilled?.Invoke(this, new System.EventArgs());
         }
     }
 }

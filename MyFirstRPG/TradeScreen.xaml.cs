@@ -33,7 +33,7 @@ namespace MyFirstRPG
 
             if (groupedInventoryiItem !=null)
             {
-                Session.CurrentPlayer.Gold += groupedInventoryiItem.Item.Price;
+                Session.CurrentPlayer.ReceiveGold( groupedInventoryiItem.Item.Price);
                 Session.CurrentPlayer.RemoveItemFromInventory(groupedInventoryiItem.Item);
                 Session.CurrentTrader.AddItemToInventory(groupedInventoryiItem.Item);
             }
@@ -47,7 +47,7 @@ namespace MyFirstRPG
             {
                 if(Session.CurrentPlayer.Gold >= groupedInventoryItem.Item.Price)
                 {
-                    Session.CurrentPlayer.Gold -= groupedInventoryItem.Item.Price;
+                    Session.CurrentPlayer.SpendGold(groupedInventoryItem.Item.Price);
                     Session.CurrentPlayer.AddItemToInventory(groupedInventoryItem.Item);
                     Session.CurrentTrader.RemoveItemFromInventory(groupedInventoryItem.Item);
                 }

@@ -59,9 +59,12 @@ namespace GameEngine.Models
         
         public ObservableCollection<QuestStatus> Quests { get; set; }
 
-        public Player()
+        public Player(string name, string characterClass, int eXPPoint, int level, int currentHitPoint, int maximumHitPoint, int gold)
+            :base(name, currentHitPoint,maximumHitPoint,gold)
         {
-            
+            CharacterClass = characterClass;
+            EXPPoint = eXPPoint;
+            Level = level;
             Quests = new ObservableCollection<QuestStatus>();
         }
         
