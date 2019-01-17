@@ -14,6 +14,17 @@ namespace GameEngine.Models
         private int _currentHitPoint;
         private int _maximumHitPoint;
         private int _gold;
+        private int _level;
+
+        public int Level
+        {
+            get { return _level; }
+            protected set
+            {
+                _level = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string Name
         {
@@ -21,7 +32,7 @@ namespace GameEngine.Models
             private set
             {
                 _name = value;
-                OnPropertyChanged(nameof(Name));
+                OnPropertyChanged();
             }
         }
 
@@ -31,17 +42,17 @@ namespace GameEngine.Models
             private set
             {
                 _currentHitPoint = value;
-                OnPropertyChanged(nameof(CurrentHitPoint));
+                OnPropertyChanged();
             }
         }
 
         public int MaximumHitPoint
         {
             get { return _maximumHitPoint; }
-            private set
+            protected set
             {
                 _maximumHitPoint = value;
-                OnPropertyChanged(nameof(MaximumHitPoint));
+                OnPropertyChanged();
             }
         }
 
@@ -51,22 +62,23 @@ namespace GameEngine.Models
             private set
             {
                 _gold = value;
-                OnPropertyChanged(nameof(Gold));
+                OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<GameItem> Inventory { get; set; }
-        public ObservableCollection<GroupedInventoryItem> GroupedInventory { get; set; }
+        public ObservableCollection<GameItem> Inventory { get; }
+        public ObservableCollection<GroupedInventoryItem> GroupedInventory { get; }
         public List<GameItem> Weapons => Inventory.Where(i => i is Weapon).ToList();
         public bool IsDead => CurrentHitPoint <= 0;
         public event EventHandler OnKilled;
 
-        protected LivingEntity(string name, int currentHitPoint, int maximumHitPoint, int gold)
+        protected LivingEntity(string name, int currentHitPoint, int maximumHitPoint, int gold, int level=1)
         {
             Name = name;
             CurrentHitPoint = currentHitPoint;
             MaximumHitPoint = maximumHitPoint;
             Gold = gold;
+            Level = level;
 
             Inventory = new ObservableCollection<GameItem>();
             GroupedInventory = new ObservableCollection<GroupedInventoryItem>();
@@ -132,8 +144,9 @@ namespace GameEngine.Models
         public void RemoveItemFromInventory(GameItem item)
         {
             Inventory.Remove(item);
-            GroupedInventoryItem groupedInventoryItemToRemove =
-                GroupedInventory.FirstOrDefault(t => t.Item.ItemTypeId == item.ItemTypeId);
+            GroupedInventoryItem groupedInventoryItemToRemove = item.IsUnique ?
+                GroupedInventory.FirstOrDefault(gi => gi.Item == item) :
+                GroupedInventory.FirstOrDefault(gi => gi.Item.ItemTypeId == item.ItemTypeId);
             if (item.IsUnique)
             {
                 GroupedInventory.Remove(groupedInventoryItemToRemove);

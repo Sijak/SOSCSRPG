@@ -11,12 +11,12 @@ namespace GameEngine.Models
     public class Player : LivingEntity
 
     {
-        
+
 
         private int _eXPPoint;
-        private string _characterClass;         
-        private int _level;
-  
+        private string _characterClass;
+
+
         public string CharacterClass
         {
             get
@@ -26,58 +26,63 @@ namespace GameEngine.Models
             set
             {
                 _characterClass = value;
-                OnPropertyChanged(nameof(CharacterClass));
+                OnPropertyChanged();
             }
         }
-        
+
         public int EXPPoint
         {
             get
             {
                 return _eXPPoint;
             }
-            set
+            private set
             {
                 _eXPPoint = value;
-                OnPropertyChanged(nameof(EXPPoint));
+                SetLevelAndMaximumHitPoint();
+                OnPropertyChanged();
+               
             }
         }
-        public int Level
-        {
-            get
-            {
-                return _level;
-            }
-            set
-            {
-                _level = value;
-                OnPropertyChanged(nameof(Level));
-            }
 
-        }
-       
-        
-        public ObservableCollection<QuestStatus> Quests { get; set; }
+        public event EventHandler OnLeveledUp;
 
-        public Player(string name, string characterClass, int eXPPoint, int level, int currentHitPoint, int maximumHitPoint, int gold)
-            :base(name, currentHitPoint,maximumHitPoint,gold)
+        public ObservableCollection<QuestStatus> Quests { get; }
+
+        public Player(string name, string characterClass, int eXPPoint, int currentHitPoint, int maximumHitPoint, int gold)
+            : base(name, currentHitPoint, maximumHitPoint, gold)
         {
             CharacterClass = characterClass;
             EXPPoint = eXPPoint;
-            Level = level;
             Quests = new ObservableCollection<QuestStatus>();
         }
-        
-        public bool HasAllTheseItems (List<ItemQuantity> xoxo )
+
+        public bool HasAllTheseItems(List<ItemQuantity> xoxo)
         {
             foreach (ItemQuantity item in xoxo)
             {
-                if (Inventory.Count(i => i.ItemTypeId == item.ItemID)<item.Quantity)
+                if (Inventory.Count(i => i.ItemTypeId == item.ItemID) < item.Quantity)
                 { return false; }
-                
+
             }
             return true;
-            
+
+        }
+
+        public void AddEXPPoint (int eXPPoint)
+        {
+            EXPPoint += eXPPoint;
+        }
+        private void SetLevelAndMaximumHitPoint()
+        {
+            int originalLevel = Level;
+            Level = (EXPPoint / 10) + 1;
+            if(Level!=originalLevel)
+            {
+                MaximumHitPoint = Level * 10;
+                OnLeveledUp?.Invoke(this, System.EventArgs.Empty);
+            }
+
         }
     }
     

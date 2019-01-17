@@ -8,7 +8,7 @@ namespace GameEngine.Models
 {
     public class MonsterEncounter
     {
-        public int MonsterID { get; set; }          
+        public int MonsterID { get; }          
         public int ChanceOfEncounter { get; set; }
 
         public MonsterEncounter(int monsterID, int chanceOfEncounter)

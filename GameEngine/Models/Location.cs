@@ -9,15 +9,23 @@ namespace GameEngine.Models
 {
     public class Location
     {
-        public int XCoordinate { get; set; }
-        public int YCoordinate { get; set; }
-        public string Name { get; set; } 
-        public string Description { get; set; }
-        public string ImageName { get; set; }
-        public List<Quest> QuestAvailableHere { get; set; } = new List<Quest>();//In this way I dont have to make a constructor.
+        public int XCoordinate { get; }
+        public int YCoordinate { get; }
+        public string Name { get; } 
+        public string Description { get;}
+        public string ImageName { get;  }
+        public List<Quest> QuestAvailableHere { get; } = new List<Quest>();//In this way I dont have to make a constructor.
 
-        public List<MonsterEncounter> MonstersHere { get; set; } = new List<MonsterEncounter>();
+        public List<MonsterEncounter> MonstersHere { get;  } = new List<MonsterEncounter>();
         public Trader TraderHere { get; set; }
+        public Location(int xCoordinate, int yCoordinate, string name, string description, string imageName)
+        {
+            XCoordinate = xCoordinate;
+            YCoordinate = yCoordinate;
+            Name = name;
+            Description = description;
+            ImageName = imageName;
+        }
         public void AddMonster(int monsterID, int chanceOfEncounter)
         {
             if (MonstersHere.Exists(m=>m.MonsterID==monsterID))

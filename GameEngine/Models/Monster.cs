@@ -9,10 +9,10 @@ namespace GameEngine.Models
     public class Monster :LivingEntity
     {
         
-        public string ImageName { get; set; }   
-        public int MaximumDamage { get; set; }
-        public int MinimumDamage { get; set; }
-        public int RewardEXPPoint { get; set; } 
+        public string ImageName { get; }   
+        public int MaximumDamage { get; }
+        public int MinimumDamage { get; }
+        public int RewardEXPPoint { get; } 
 
         public Monster(string name, string imageName, int maximumHitPoint, 
             int hitPoint,int maximumDamage, int minimumDamage, int rewardEXPPoint, int rewardGold)
