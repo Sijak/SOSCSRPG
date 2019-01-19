@@ -13,28 +13,31 @@ namespace GameEngine.Factories
         static ItemFactory()
         {
            
-            _standardGameItems.Add(new Weapon(1001, "Pointy Stick", 1, 1, 2));
-            _standardGameItems.Add(new Weapon(1002, "Rusty Sword", 5, 1, 3));
-            _standardGameItems.Add(new GameItem(9001, "Snake Fang", 1));
-            _standardGameItems.Add(new GameItem(9002, "Snakeskin", 2));
-            _standardGameItems.Add(new GameItem(9003, "Rat tail", 1));
-            _standardGameItems.Add(new GameItem(9004, "Rat fur", 2));
-            _standardGameItems.Add(new GameItem(9005, "Spider fang", 1));
-            _standardGameItems.Add(new GameItem(9006, "Spider silk", 2));
+            BuildWeapon(1001, "Pointy Stick", 1, 1, 2);
+            BuildWeapon(1002, "Rusty Sword", 5, 1, 3);
+            BuildMiscellaneusItem(9001, "Snake Fang", 1);
+            BuildMiscellaneusItem(9002, "Snakeskin", 2);
+            BuildMiscellaneusItem(9003, "Rat tail", 1);
+            BuildMiscellaneusItem(9004, "Rat fur", 2);
+            BuildMiscellaneusItem(9005, "Spider fang", 1);
+            BuildMiscellaneusItem(9006, "Spider silk", 2);
+            
 
         }
         public static GameItem CreateGameItem(int itemTypeID)
         {
-            GameItem standardItem = _standardGameItems.FirstOrDefault(x => x.ItemTypeId == itemTypeID );
-            if (standardItem!=null)
-            {
-                if (standardItem is Weapon)
-                {
-                    return (standardItem as Weapon).Clone();
-                }
-                return standardItem.Clone();
-            }
-            return null;
+            return _standardGameItems.FirstOrDefault(x => x.ItemTypeId == itemTypeID)?.Clone();         
         }
+        private static void BuildWeapon( int itemTypeId, string name, int price,
+             int minimumDamage = 0, int maximumDamage = 0)
+        {
+             _standardGameItems.Add(new GameItem
+                 (GameItem.ItemCategory.Weapon, itemTypeId, name, price, true, minimumDamage, maximumDamage));
+        }
+        private static void BuildMiscellaneusItem(int itemTypeId, string name, int price)
+        {
+            _standardGameItems.Add(new GameItem(GameItem.ItemCategory.Miscellaneous, itemTypeId, name, price));
+        }
+
     }
 }

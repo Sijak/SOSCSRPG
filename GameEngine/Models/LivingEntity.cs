@@ -68,7 +68,7 @@ namespace GameEngine.Models
 
         public ObservableCollection<GameItem> Inventory { get; }
         public ObservableCollection<GroupedInventoryItem> GroupedInventory { get; }
-        public List<GameItem> Weapons => Inventory.Where(i => i is Weapon).ToList();
+        public List<GameItem> Weapons => Inventory.Where(i => i.Category == GameItem.ItemCategory.Weapon).ToList();
         public bool IsDead => CurrentHitPoint <= 0;
         public event EventHandler OnKilled;
 
