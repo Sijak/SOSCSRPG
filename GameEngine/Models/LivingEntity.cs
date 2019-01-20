@@ -10,11 +10,14 @@ namespace GameEngine.Models
     public abstract class LivingEntity : BaseNotificationClass
     //as an abstract class, LivingEntity cannot be instantiated. Child can be.
     {
+        #region Properties
+
         private string _name;
         private int _currentHitPoint;
         private int _maximumHitPoint;
         private int _gold;
         private int _level;
+        private GameItem _currentWeapon;
 
         public int Level
         {
@@ -65,12 +68,34 @@ namespace GameEngine.Models
                 OnPropertyChanged();
             }
         }
+        public GameItem CurrentWeapon
+        {
+            get { return _currentWeapon; }
+            set
+            {
+                if (_currentWeapon != null)
+                {
+                    _currentWeapon.Action.OnActionPerformed -= RaiseActionPerformedEvent;
+                }
+                _currentWeapon = value;
+                if (_currentWeapon!=null)
+                {
+                    _currentWeapon.Action.OnActionPerformed += RaiseActionPerformedEvent;
+                }
+                OnPropertyChanged();
+            }
+        }
 
         public ObservableCollection<GameItem> Inventory { get; }
         public ObservableCollection<GroupedInventoryItem> GroupedInventory { get; }
         public List<GameItem> Weapons => Inventory.Where(i => i.Category == GameItem.ItemCategory.Weapon).ToList();
         public bool IsDead => CurrentHitPoint <= 0;
+
+        #endregion
+
         public event EventHandler OnKilled;
+        public event EventHandler<string> OnActionPerformed;
+
 
         protected LivingEntity(string name, int currentHitPoint, int maximumHitPoint, int gold, int level=1)
         {
@@ -82,6 +107,11 @@ namespace GameEngine.Models
 
             Inventory = new ObservableCollection<GameItem>();
             GroupedInventory = new ObservableCollection<GroupedInventoryItem>();
+        }
+
+        public void UseCurrentWeapon(LivingEntity target)
+        {
+            CurrentWeapon.PerformAction(this, target);
         }
 
         public void TakeDamage(int hitPointsOfDamage)
@@ -167,6 +197,10 @@ namespace GameEngine.Models
         private void RaiseOnKilledEvent()
         {
             OnKilled?.Invoke(this, new System.EventArgs());
+        }
+        private void RaiseActionPerformedEvent (object sender, string result)
+        {
+            OnActionPerformed?.Invoke(this, result);
         }
     }
 }

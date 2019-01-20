@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameEngine.Models;
+using GameEngine.Action;
 
 namespace GameEngine.Factories
 {
@@ -28,11 +29,11 @@ namespace GameEngine.Factories
         {
             return _standardGameItems.FirstOrDefault(x => x.ItemTypeId == itemTypeID)?.Clone();         
         }
-        private static void BuildWeapon( int itemTypeId, string name, int price,
-             int minimumDamage = 0, int maximumDamage = 0)
+        private static void BuildWeapon( int itemTypeId, string name, int price,int minimumDamage, int maximumDamage)
         {
-             _standardGameItems.Add(new GameItem
-                 (GameItem.ItemCategory.Weapon, itemTypeId, name, price, true, minimumDamage, maximumDamage));
+            GameItem weapon = new GameItem(GameItem.ItemCategory.Weapon, itemTypeId, name, price, true);
+            weapon.Action = new AttackWithWeapon(weapon, minimumDamage, maximumDamage);
+            _standardGameItems.Add(weapon);
         }
         private static void BuildMiscellaneusItem(int itemTypeId, string name, int price)
         {

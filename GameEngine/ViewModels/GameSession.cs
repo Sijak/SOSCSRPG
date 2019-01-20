@@ -25,6 +25,7 @@ namespace GameEngine.ViewModels
             {
                 if (_currentPlayer != null)
                 {
+                    CurrentPlayer.OnActionPerformed -= OnCurrentPlayerPerformedAction;
                     CurrentPlayer.OnLeveledUp -= OnCurrentPlayerLeveledUp;
                     CurrentPlayer.OnKilled -= OnCurrentPlayerKilled;
                     
@@ -32,6 +33,7 @@ namespace GameEngine.ViewModels
                 _currentPlayer = value;
                 if (_currentPlayer != null)
                 {
+                    CurrentPlayer.OnActionPerformed += OnCurrentPlayerPerformedAction;
                     CurrentPlayer.OnLeveledUp += OnCurrentPlayerLeveledUp;
                     CurrentPlayer.OnKilled += OnCurrentPlayerKilled;
                 }
@@ -80,7 +82,6 @@ namespace GameEngine.ViewModels
                 
             }
         }
-        public GameItem CurrentWeapon { get; set; }
 
         public Trader CurrentTrader
         {
@@ -178,24 +179,14 @@ namespace GameEngine.ViewModels
         public void AttackCurrentMonster()
         {
             //guard clause, or early exit
-            if (CurrentWeapon == null)
+            if (CurrentPlayer.CurrentWeapon == null)
             {
                 RaiseMessage("You must select a weapon to attack.");
                 return;
             }
             //Determine damage to monsters
-            int damageToMonster = RandomNumberGenerator.NumberBetween(CurrentWeapon.MinimumDamage, CurrentWeapon.MaximumDamage);
+            CurrentPlayer.UseCurrentWeapon(CurrentMonster);
 
-            if (damageToMonster == 0)
-            {
-                RaiseMessage($"You missed the {CurrentMonster.Name}");
-            }
-            else
-            {
-                RaiseMessage($"You hit {CurrentMonster.Name} for {damageToMonster} points");
-                CurrentMonster.TakeDamage(damageToMonster);
-                
-            }
             //if monster is killed, collect xp and loot
             if (CurrentMonster.IsDead)
             {              
@@ -260,6 +251,10 @@ namespace GameEngine.ViewModels
             }
         }
 
+        private void OnCurrentPlayerPerformedAction (object sender, string result)
+        {
+            RaiseMessage(result);
+        }
         private void OnCurrentPlayerKilled(object sender, System.EventArgs eventArgs)
         {
             RaiseMessage("");

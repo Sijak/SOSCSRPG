@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameEngine.Action;
 
 namespace GameEngine.Models
 {
@@ -18,23 +19,28 @@ namespace GameEngine.Models
         public string Name { get; }
         public int Price { get; }
         public bool IsUnique { get; }
-        public int MinimumDamage { get; }
-        public int MaximumDamage { get; }
+        public AttackWithWeapon Action { get; set; }
+        
 
         public GameItem(ItemCategory category, int itemTypeId, string name, int price,
-            bool isUnique=false, int minimumDamage=0, int maximumDamage=0)
+            bool isUnique=false, AttackWithWeapon action=null)
         {
             Category = category;
             ItemTypeId = itemTypeId;
             Name = name;
             Price = price;
             IsUnique = isUnique;
-            MaximumDamage = maximumDamage;
-            MinimumDamage = minimumDamage;
+            Action = action;
+            
+        }
+
+        public void PerformAction (LivingEntity actor, LivingEntity target)
+        {
+            Action?.Execute(actor,target);
         }
         public GameItem Clone()
         {
-            return new GameItem(Category, ItemTypeId, Name, Price, IsUnique,MinimumDamage,MaximumDamage);
+            return new GameItem(Category, ItemTypeId, Name, Price, IsUnique, Action);
         }
     }
 }
