@@ -17,6 +17,7 @@ namespace GameEngine.ViewModels
         private Monster _currentMonster;
         private Location _currentLocation;
         private Player _currentPlayer;
+        
 
         public Player CurrentPlayer
         {
@@ -110,6 +111,7 @@ namespace GameEngine.ViewModels
             {
                 CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(1001));
             }
+            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(2001));
             CurrentWorld = WorldFactory.CreateWorld();
             CurrentLocation = CurrentWorld.LocationAt(0, -1);
             
@@ -242,6 +244,11 @@ namespace GameEngine.ViewModels
                 }
                 
             }
+        }
+
+        public void UseCurrentConsumable()
+        {
+            CurrentPlayer.UseCurrentConsumable();
         }
 
         private void OnCurrentPlayerPerformedAction (object sender, string result)

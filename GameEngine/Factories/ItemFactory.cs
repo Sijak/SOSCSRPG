@@ -21,6 +21,8 @@ namespace GameEngine.Factories
             BuildWeapon(1502, "Rat Claw", 0, 0, 2);
             BuildWeapon(1503, "Spider Fangs", 0, 0, 4);
 
+            BuildHealingItem(2001, "Granola Bar", 1, 5);
+
             BuildMiscellaneusItem(9001, "Snake Fang", 1);
             BuildMiscellaneusItem(9002, "Snakeskin", 2);
             BuildMiscellaneusItem(9003, "Rat tail", 1);
@@ -43,6 +45,14 @@ namespace GameEngine.Factories
         private static void BuildMiscellaneusItem(int itemTypeId, string name, int price)
         {
             _standardGameItems.Add(new GameItem(GameItem.ItemCategory.Miscellaneous, itemTypeId, name, price));
+        }
+
+        private static void BuildHealingItem(int itemTypeId, string name, int price, int hitPointToHeal)
+        {
+            GameItem item = new GameItem(GameItem.ItemCategory.Consumable, itemTypeId, name, price);
+            item.Action = new Heal(item, hitPointToHeal);
+            _standardGameItems.Add(item);
+
         }
 
     }

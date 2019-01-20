@@ -12,7 +12,8 @@ namespace GameEngine.Models
         public enum ItemCategory
         {
             Weapon,
-            Miscellaneous       
+            Miscellaneous,
+            Consumable
         }
         public ItemCategory Category { get; }
         public int ItemTypeId { get; }
