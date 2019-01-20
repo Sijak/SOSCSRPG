@@ -37,13 +37,17 @@ namespace GameEngine.Action
         public void Execute (LivingEntity actor, LivingEntity target)
         {
             int damage = RandomNumberGenerator.NumberBetween(_minimumDamage,_maximumDamage);
+
+            string actorName = (actor is Player) ? "You" : $"The {actor.Name.ToLower()}";
+            string targetName = (target is Player) ? "you" : $"the {actor.Name.ToLower()}";
+
             if (damage == 0)
             {
-                ReportResult($"You missed {target.Name}.");
+                ReportResult($"{actorName} missed {targetName}.");
             }
             else
             {
-                ReportResult($"You hit the {target.Name} for {damage} points of damage.");
+                ReportResult($"{actorName} hit the {targetName} for {damage} point{(damage > 1 ? "s" : "")}.");
                 target.TakeDamage(damage);
             }
 
