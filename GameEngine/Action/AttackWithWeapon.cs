@@ -7,19 +7,19 @@ using GameEngine.Models;
 
 namespace GameEngine.Action
 {
-    public class AttackWithWeapon : IAction
+    public class AttackWithWeapon : BaseAction,IAction
     {
-        private readonly GameItem _weapon;
+        
         private readonly int _minimumDamage;
         private readonly int _maximumDamage;
 
-        public event EventHandler<String> OnActionPerformed;
+        
 
-        public AttackWithWeapon(GameItem weapon, int minimumDamage, int maximumDamage)
+        public AttackWithWeapon(GameItem itemInUse, int minimumDamage, int maximumDamage) :base(itemInUse)
         {
-            if(weapon.Category != GameItem.ItemCategory.Weapon)
+            if(itemInUse.Category != GameItem.ItemCategory.Weapon)
             {
-                throw new ArgumentException($"{weapon.Name} is not a weapon.");
+                throw new ArgumentException($"{itemInUse.Name} is not a weapon.");
             }
             if(minimumDamage<0)
             {
@@ -29,7 +29,7 @@ namespace GameEngine.Action
             {
                 throw new ArgumentException("Maximum Damage must be >= Minimum Damage.");
             }
-            _weapon = weapon;
+            
             _maximumDamage = maximumDamage;
             _minimumDamage = minimumDamage;
 
@@ -53,9 +53,6 @@ namespace GameEngine.Action
 
         }
 
-        private void ReportResult(string result)
-        {
-            OnActionPerformed?.Invoke(this, result);
-        }
+        
     }
 }

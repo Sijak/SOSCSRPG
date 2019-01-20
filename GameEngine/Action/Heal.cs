@@ -7,20 +7,20 @@ using GameEngine.Models;
 
 namespace GameEngine.Action
 {
-    public class Heal : IAction
+    public class Heal : BaseAction, IAction
     {
-        public readonly GameItem _item;
-        public readonly int _hitPointsToHeal;
+        
+        private readonly int _hitPointsToHeal;
 
-        public event EventHandler<string> OnActionPerformed;
 
-        public Heal(GameItem item, int hitPointToHeal)
+
+        public Heal(GameItem iteminUse, int hitPointToHeal) : base(iteminUse)
         {
-            if(item.Category != GameItem.ItemCategory.Consumable)
+            if(iteminUse.Category != GameItem.ItemCategory.Consumable)
             {
-                throw new ArgumentException($"{item.Name} is not consumable item.");
+                throw new ArgumentException($"{iteminUse.Name} is not consumable item.");
             }
-            _item = item;
+            
             _hitPointsToHeal = hitPointToHeal;
         }
         public void Execute(LivingEntity actor, LivingEntity target)
@@ -31,9 +31,6 @@ namespace GameEngine.Action
             target.Heal(_hitPointsToHeal);            
         }
 
-        private void ReportResult(string result)
-        {
-            OnActionPerformed?.Invoke(this, result);
-        }
+       
     }
 }
