@@ -77,10 +77,13 @@ namespace WPFUI
 
         private void OnClick_DisplayTradeScreen(object sender, RoutedEventArgs e)
         {
-            TradeScreen tradeScreen = new TradeScreen();
-            tradeScreen.Owner = this;
-            tradeScreen.DataContext = _gameSession;
-            tradeScreen.ShowDialog();
+            if (_gameSession.CurrentTrader != null)
+            {
+                TradeScreen tradeScreen = new TradeScreen();
+                tradeScreen.Owner = this;
+                tradeScreen.DataContext = _gameSession;
+                tradeScreen.ShowDialog();
+            }
         }
 
         private void InitializeUserInputActions()
@@ -91,6 +94,10 @@ namespace WPFUI
             _userInputActions.Add(Key.D, () => _gameSession.MoveEast());
             _userInputActions.Add(Key.Z, () => _gameSession.AttackCurrentMonster());
             _userInputActions.Add(Key.C, () => _gameSession.UseCurrentConsumable());
+            _userInputActions.Add(Key.I, () => SetTabFocusTo("InventoryTabItem"));
+            _userInputActions.Add(Key.Q, () => SetTabFocusTo("QuestTabItem"));
+            _userInputActions.Add(Key.R, () => SetTabFocusTo("RecipeTabItem"));
+            _userInputActions.Add(Key.T, () => OnClick_DisplayTradeScreen(this, new RoutedEventArgs()));
         }
 
         private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
@@ -99,6 +106,32 @@ namespace WPFUI
             {
                 _userInputActions[e.Key].Invoke();
             }
+        }
+
+        private void SetTabFocusTo (string tabname)
+        {
+            //casting
+
+            foreach (object item in PlayerDataTabControl.Items)
+            {
+                TabItem tabItem = item as TabItem;
+                if (tabItem !=null)
+                {
+                    if (tabItem.Name==tabname)
+                    {
+                        tabItem.IsSelected = true;
+                        return;
+                    }
+                }
+            }
+
+                //{
+                //    if (tabItem.Name == tabname)
+                //    {
+                //        tabItem.IsSelected = true;
+                //        return;
+                //    }
+                //}
         }
     }
 }
