@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GameEngine.Models;
 using GameEngine.Action;
+using GameEngine.Shared;
 
 namespace GameEngine.Factories
 {
@@ -43,20 +44,20 @@ namespace GameEngine.Factories
             foreach(XmlNode node in nodes)
             {
                 GameItem.ItemCategory itemCategory = DetermineItemCategory(node.Name);
-                GameItem gameItem = new GameItem(itemCategory, GetXMLAttributeAsInt(node, "ID"), GetXMLAttributeAsString(node, "Name"),
-                    GetXMLAttributeAsInt(node, "Price"), itemCategory == GameItem.ItemCategory.Weapon);
+                GameItem gameItem = new GameItem(itemCategory, node.AttributeAsInt("ID"), node.AttributeAsString("Name"),
+                    node.AttributeAsInt("Price"), itemCategory == GameItem.ItemCategory.Weapon);
                 if(itemCategory==GameItem.ItemCategory.Weapon)
                 {
                     gameItem.Action = new AttackWithWeapon
                         (gameItem, 
-                        GetXMLAttributeAsInt(node, "MinimumDamage"), 
-                        GetXMLAttributeAsInt(node, "MaximumDamage"));
+                        node.AttributeAsInt("MinimumDamage"), 
+                        node.AttributeAsInt("MaximumDamage"));
                 }
                 else if (itemCategory == GameItem.ItemCategory.Consumable)
                 {
                     gameItem.Action = new Heal
                         (gameItem, 
-                        GetXMLAttributeAsInt(node, "HitPointsToHeal"));
+                        node.AttributeAsInt("HitPointsToHeal"));
                 }
                 _standardGameItems.Add(gameItem);
             }
@@ -74,30 +75,7 @@ namespace GameEngine.Factories
                     return GameItem.ItemCategory.Miscellaneous;
             }
         }
-
-        private static string GetXMLAttribute (XmlNode node, string attributeName)
-        {
-            XmlAttribute attribute = node.Attributes?[attributeName]; //????????????????????
-
-            if (attributeName==null)
-            {
-                throw new ArgumentException($"The attribute {attributeName} does not exist.");
-            }
-            return attribute.Value;
-        }
-
-        private static int GetXMLAttributeAsInt (XmlNode node, string attributeName)
-        {
-            return Convert.ToInt32(GetXMLAttribute(node, attributeName));
-        }
-
-        private static string GetXMLAttributeAsString (XmlNode node, string attributeName)
-        {
-            return Convert.ToString(GetXMLAttribute(node, attributeName));
-        }
-
-
-
+        
         public static GameItem CreateGameItem(int itemTypeID)
         {
             return _standardGameItems.FirstOrDefault(x => x.ItemTypeId == itemTypeID)?.Clone();         
