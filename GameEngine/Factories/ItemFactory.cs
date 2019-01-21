@@ -59,5 +59,10 @@ namespace GameEngine.Factories
 
         }
 
+        public static string ItemName(int itemTypeID)
+        {
+            return _standardGameItems.FirstOrDefault(t => t.ItemTypeId == itemTypeID)?.Name ?? "";
+        }
+
     }
 }

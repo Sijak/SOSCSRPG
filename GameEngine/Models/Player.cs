@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,17 +58,7 @@ namespace GameEngine.Models
             Recipes = new ObservableCollection<Recipe>();
         }
 
-        public bool HasAllTheseItems(List<ItemQuantity> xoxo)
-        {
-            foreach (ItemQuantity item in xoxo)
-            {
-                if (Inventory.Count(i => i.ItemTypeId == item.ItemID) < item.Quantity)
-                { return false; }
-
-            }
-            return true;
-
-        }
+      
 
         public void LearnRecipe (Recipe recipe)
         {

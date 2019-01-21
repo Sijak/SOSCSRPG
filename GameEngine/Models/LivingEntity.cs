@@ -226,6 +226,27 @@ namespace GameEngine.Models
             OnPropertyChanged(nameof(Consumables));
             OnPropertyChanged(nameof(HasConsumable));
         }
+
+        public void RemoveItemsFromInventory (List<ItemQuantity> itemQuantities)
+        {
+            foreach (ItemQuantity quantity in itemQuantities)
+                for (int i=0; i<quantity.Quantity; i++)
+                {
+                    RemoveItemFromInventory(Inventory.First(t => t.ItemTypeId == quantity.ItemID));
+                }
+        }
+
+        public bool HasAllItems (List<ItemQuantity> itemsNeeded)
+        {
+            foreach (ItemQuantity item in itemsNeeded)
+            {
+                if(Inventory.Count(t=>t.ItemTypeId == item.ItemID)<item.Quantity)
+                {
+                    return false;
+                }               
+            }
+            return true;
+        }
         private void RaiseOnKilledEvent()
         {
             OnKilled?.Invoke(this, new System.EventArgs());

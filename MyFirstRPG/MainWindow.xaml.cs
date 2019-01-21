@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using GameEngine.ViewModels;
 using GameEngine.EventArgs;
 using MyFirstRPG;
+using GameEngine.Models;
 
 namespace WPFUI
 {
@@ -57,6 +58,12 @@ namespace WPFUI
         private void OnClick_CurrentConsumable(object sender, RoutedEventArgs e)
         {
             _gameSession.UseCurrentConsumable();
+        }
+
+        private void OnClick_Craft(object sender, RoutedEventArgs e)
+        {
+            Recipe recipe = ((FrameworkElement)sender).DataContext as Recipe;//?????????????
+            _gameSession.CraftItemUsing(recipe);
         }
 
         private void OnGameMessageRaised(object sender, GameMessageEventArgs e)
