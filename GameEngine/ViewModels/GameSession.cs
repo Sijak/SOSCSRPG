@@ -190,6 +190,9 @@ namespace GameEngine.ViewModels
         public void AttackCurrentMonster()
         {
             //guard clause, or early exit
+            if (CurrentMonster == null)
+            { return; }
+
             if (CurrentPlayer.CurrentWeapon == null)
             {
                 RaiseMessage("You must select a weapon to attack.");
@@ -246,7 +249,10 @@ namespace GameEngine.ViewModels
 
         public void UseCurrentConsumable()
         {
-            CurrentPlayer.UseCurrentConsumable();
+            if (CurrentPlayer.CurrentConsumable!=null)
+            {
+                CurrentPlayer.UseCurrentConsumable();
+            }
         }
 
         public void CraftItemUsing (Recipe recipe)
