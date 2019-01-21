@@ -48,6 +48,7 @@ namespace GameEngine.Models
         public event EventHandler OnLeveledUp;
 
         public ObservableCollection<QuestStatus> Quests { get; }
+        public ObservableCollection<Recipe> Recipes { get; }
 
         public Player(string name, string characterClass, int eXPPoint, int currentHitPoint, int maximumHitPoint, int gold)
             : base(name, currentHitPoint, maximumHitPoint, gold)
@@ -55,6 +56,7 @@ namespace GameEngine.Models
             CharacterClass = characterClass;
             EXPPoint = eXPPoint;
             Quests = new ObservableCollection<QuestStatus>();
+            Recipes = new ObservableCollection<Recipe>();
         }
 
         public bool HasAllTheseItems(List<ItemQuantity> xoxo)
@@ -67,6 +69,14 @@ namespace GameEngine.Models
             }
             return true;
 
+        }
+
+        public void LearnRecipe (Recipe recipe)
+        {
+            if (!Recipes.Any(t=>t.ID == recipe.ID))
+            {
+                Recipes.Add(recipe);
+            }
         }
 
         public void AddEXPPoint (int eXPPoint)
