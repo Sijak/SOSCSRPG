@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFUI"
+        xmlns:local="clr-namespace:MyFirstRPG"
         mc:Ignorable="d"
         FontSize="11pt"
         Title="YESYES" Height="768" Width="1024"
@@ -94,7 +94,9 @@
                            VerticalAlignment="Center" 
                            Height="125" 
                            Width="125"
-                           Source="{Binding CurrentLocation.ImageName}"/>
+                           Source="{Binding CurrentLocation.ImageName, 
+                                            Converter={StaticResource FileToBitMapConverter}}"/>
+
                     <TextBlock Grid.Row="2" HorizontalAlignment="Center" Text="{Binding CurrentLocation.Description}"/>
 
                 </Grid>

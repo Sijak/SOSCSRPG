@@ -125,36 +125,36 @@ namespace GameEngine.ViewModels
         public bool HasTrader => CurrentTrader != null;
 
         public bool HasLocationToNorth =>
-            CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1) != null;
+            CurrentWorld.LocationAt(CurrentLocation.X, CurrentLocation.Y + 1) != null;
 
         public bool HasLocationToSouth =>
-            CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1) != null;
+            CurrentWorld.LocationAt(CurrentLocation.X, CurrentLocation.Y - 1) != null;
 
         public bool HasLocationToEast =>
-            CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate) != null;
+            CurrentWorld.LocationAt(CurrentLocation.X + 1, CurrentLocation.Y) != null;
 
         public bool HasLocationToWest =>
-            CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate) != null;
+            CurrentWorld.LocationAt(CurrentLocation.X - 1, CurrentLocation.Y) != null;
 
         public void MoveNorth()
         {
             if (HasLocationToNorth)
-                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1);
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.X, CurrentLocation.Y + 1);
         }
         public void MoveSouth()
         {
             if (HasLocationToSouth)
-                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1);
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.X, CurrentLocation.Y - 1);
         }
         public void MoveWest()
         {
             if (HasLocationToWest)
-                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.X - 1, CurrentLocation.Y);
         }
         public void MoveEast()
         {
             if (HasLocationToEast)
-                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate);
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.X + 1, CurrentLocation.Y);
         }
 
         private void GivePlayerQuestAtLocation()

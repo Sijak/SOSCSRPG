@@ -9,8 +9,8 @@ namespace GameEngine.Models
 {
     public class Location
     {
-        public int XCoordinate { get; }
-        public int YCoordinate { get; }
+        public int X { get; }
+        public int Y { get; }
         public string Name { get; } 
         public string Description { get;}
         public string ImageName { get;  }
@@ -20,8 +20,8 @@ namespace GameEngine.Models
         public Trader TraderHere { get; set; }
         public Location(int xCoordinate, int yCoordinate, string name, string description, string imageName)
         {
-            XCoordinate = xCoordinate;
-            YCoordinate = yCoordinate;
+            X = xCoordinate;
+            Y = yCoordinate;
             Name = name;
             Description = description;
             ImageName = imageName;
